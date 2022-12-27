@@ -1,21 +1,19 @@
 <a href="https://www.hardwario.com/"><img src="https://www.hardwario.com/ci/assets/hw-logo.svg" width="200" alt="HARDWARIO Logo" align="right"></a>
 
-# Firmware Skeleton for HARDWARIO TOWER Core Module
+# LCD monitor for Turris Mox router
 
-[![Travis](https://travis-ci.org/hardwario/twr-skeleton.svg?branch=master)](https://travis-ci.org/hardwario/twr-skeleton)
-[![Release](https://img.shields.io/github/release/hardwario/twr-skeleton.svg)](https://github.com/hardwario/twr-skeleton/releases)
-[![License](https://img.shields.io/github/license/hardwario/twr-skeleton.svg)](https://github.com/hardwario/twr-skeleton/blob/master/LICENSE)
+[![build](https://github.com/hardwario/twr-radio-turris-lcd-monitor/actions/workflows/main.yml/badge.svg)](https://github.com/hardwario/twr-radio-turris-lcd-monitor/actions/workflows/main.yml)
+[![Release](https://img.shields.io/github/release/bigclownprojects/bcf-radio-turris-lcd-monitor.svg)](https://github.com/bigclownprojects/bcf-radio-turris-lcd-monitor/releases)
+[![License](https://img.shields.io/github/license/bigclownprojects/bcf-radio-turris-lcd-monitor.svg)](https://github.com/bigclownprojects/bcf-radio-turris-lcd-monitor/blob/master/LICENSE)
 [![Twitter](https://img.shields.io/twitter/follow/hardwario_en.svg?style=social&label=Follow)](https://twitter.com/hardwario_en)
 
-This repository contains firmware skeleton for [Core Module](https://shop.hardwario.com/core-module).
+This repository contains firmware Turris LCD monitor for [Core Module](https://shop.bigclown.com/core-module).
 
 If you want to get more information about Core Module, firmware and how to work with it, please follow this link:
 
-**https://tower.hardwario.com/en/latest/firmware/basic-overview**
+**https://developers.hardwario.com/firmware/basic-overview/**
 
 User's application code (business logic) goes into `src/application.c`.
-The default content works as a *Hello World* example.
-When flashed into Core Module, it toggles LED state with each button press.
 
 ## License
 
