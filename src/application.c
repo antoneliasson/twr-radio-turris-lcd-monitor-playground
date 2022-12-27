@@ -1,7 +1,3 @@
-#ifndef VERSION
-#define VERSION "vdev"
-#endif
-
 #include <twr.h>
 #include <bcl.h>
 
@@ -227,7 +223,7 @@ void application_init(void)
     twr_radio_set_rx_timeout_for_sleeping_node(400);
     twr_radio_set_subs((twr_radio_sub_t *) subs, sizeof(subs)/sizeof(twr_radio_sub_t));
 
-    twr_radio_pairing_request("turris-mon", VERSION);
+    twr_radio_pairing_request("turris-mon", FW_VERSION);
 
     twr_log_debug("jedu");
 }
