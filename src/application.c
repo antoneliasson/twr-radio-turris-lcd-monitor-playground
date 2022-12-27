@@ -19,6 +19,11 @@ static enum {
     NUM_PAGES
 } display_page_index;
 
+enum {
+    RESPONSE_SYSTEM_INFO,
+    RESPONSE_NETWORK_INFO
+};
+
 static char hostname[20];
 static char type[50];
 static char memory[50];
@@ -28,12 +33,11 @@ static char ipAddress[40];
 static char subnet[40];
 static char devicesConnected[5];
 
-static void twr_get_system_info(uint64_t *id, const char *topic, void *value, void *param);
-static void twr_get_network_info(uint64_t *id, const char *topic, void *value, void *param);
+static void radio_response_handler(uint64_t *id, const char *topic, void *value, void *param);
 
 static const twr_radio_sub_t subs[] = {
-    {"update/-/system/info", TWR_RADIO_SUB_PT_STRING, twr_get_system_info, NULL},
-    {"update/-/network/info", TWR_RADIO_SUB_PT_STRING, twr_get_network_info, NULL}
+    {"update/-/system/info", TWR_RADIO_SUB_PT_STRING, radio_response_handler, (void *)RESPONSE_SYSTEM_INFO},
+    {"update/-/network/info", TWR_RADIO_SUB_PT_STRING, radio_response_handler, (void *)RESPONSE_NETWORK_INFO}
 };
 
 static twr_tmp112_t temp;
@@ -71,51 +75,39 @@ static void tmp112_event_handler(twr_tmp112_t *self, twr_tmp112_event_t event, v
     }
 }
 
-static void twr_get_system_info(uint64_t *id, const char *topic, void *value, void *param)
+static void radio_response_handler(uint64_t *id, const char *topic, void *value, void *param)
 {
-    (void) id;
-    (void) topic;
-    (void) param;
+    (void)id;
+    (void)topic;
     char *token[4];
-    const char s[2] = ";";
+    const char delim[2] = ";";
+    int resp_type = (int)param;
 
     twr_log_info("%s: %s=%s", __func__, topic, (char *)value);
 
-    token[0] = strtok(value, s);
-    token[1] = strtok(NULL, s);
-    token[2] = strtok(NULL, s);
-    token[3] = strtok(NULL, s);
+    token[0] = strtok(value, delim);
+    token[1] = strtok(NULL, delim);
+    token[2] = strtok(NULL, delim);
+    token[3] = strtok(NULL, delim);
 
-    strncpy(hostname, token[0], sizeof(hostname));
-    strncpy(uptime, token[1], sizeof(uptime));
-    strncpy(memory, token[2], sizeof(memory));
-    strncpy(type, token[3], sizeof(type));
-
-    twr_scheduler_plan_now(display_update_task);
-
-
-}
-
-static void twr_get_network_info(uint64_t *id, const char *topic, void *value, void *param)
-{
-    (void) id;
-    (void) topic;
-    (void) param;
-    char *token[3];
-    const char s[2] = ";";
-
-    twr_log_debug("%s at %llu", __func__, twr_tick_get());
-    token[0] = strtok(value, s);
-    token[1] = strtok(NULL, s);
-    token[2] = strtok(NULL, s);
-
-    strncpy(ipAddress, token[0], sizeof(ipAddress));
-    strncpy(subnet, token[1], sizeof(subnet));
-    strncpy(devicesConnected, token[2], sizeof(devicesConnected));
+    switch (resp_type)
+    {
+    case RESPONSE_SYSTEM_INFO:
+        strncpy(hostname, token[0], sizeof(hostname));
+        strncpy(uptime, token[1], sizeof(uptime));
+        strncpy(memory, token[2], sizeof(memory));
+        strncpy(type, token[3], sizeof(type));
+        break;
+    case RESPONSE_NETWORK_INFO:
+        strncpy(ipAddress, token[0], sizeof(ipAddress));
+        strncpy(subnet, token[1], sizeof(subnet));
+        strncpy(devicesConnected, token[2], sizeof(devicesConnected));
+        break;
+    default:
+        break;
+    }
 
     twr_scheduler_plan_now(display_update_task);
-
-
 }
 
 static void encoder_event_handler(twr_module_encoder_event_t event, void *event_param)
