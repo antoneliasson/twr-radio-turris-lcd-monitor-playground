@@ -91,15 +91,15 @@ static void radio_response_handler(uint64_t *id, const char *topic, void *value,
     switch (resp_type)
     {
     case RESPONSE_SYSTEM_INFO:
-        strncpy(hostname, token[0], sizeof(hostname));
-        strncpy(uptime, token[1], sizeof(uptime));
-        strncpy(memory, token[2], sizeof(memory));
-        strncpy(type, token[3], sizeof(type));
+        strncpy(hostname, token[0], sizeof(hostname) - 1);
+        strncpy(uptime, token[1], sizeof(uptime) - 1);
+        strncpy(memory, token[2], sizeof(memory) - 1);
+        strncpy(type, token[3], sizeof(type) - 1);
         break;
     case RESPONSE_NETWORK_INFO:
-        strncpy(ipAddress, token[0], sizeof(ipAddress));
-        strncpy(subnet, token[1], sizeof(subnet));
-        strncpy(devicesConnected, token[2], sizeof(devicesConnected));
+        strncpy(ipAddress, token[0], sizeof(ipAddress) - 1);
+        strncpy(subnet, token[1], sizeof(subnet) - 1);
+        strncpy(devicesConnected, token[2], sizeof(devicesConnected) - 1);
         break;
     default:
         application_error(TWR_ERROR_INVALID_PARAMETER);
