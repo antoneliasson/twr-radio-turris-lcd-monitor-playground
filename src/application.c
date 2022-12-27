@@ -42,6 +42,8 @@ static const twr_radio_sub_t subs[] = {
 
 static twr_tmp112_t temp;
 
+extern void application_error(twr_error_t code);
+
 static void battery_event_handler(twr_module_battery_event_t event, void *event_param)
 {
     (void) event;
@@ -104,6 +106,7 @@ static void radio_response_handler(uint64_t *id, const char *topic, void *value,
         strncpy(devicesConnected, token[2], sizeof(devicesConnected));
         break;
     default:
+        application_error(TWR_ERROR_INVALID_PARAMETER);
         break;
     }
 
@@ -141,6 +144,7 @@ static void encoder_event_handler(twr_module_encoder_event_t event, void *event_
             break;
         case NUM_PAGES:
         default:
+            application_error(TWR_ERROR_INVALID_PARAMETER);
             break;
         }
         break;
@@ -149,7 +153,7 @@ static void encoder_event_handler(twr_module_encoder_event_t event, void *event_
     case TWR_MODULE_ENCODER_EVENT_RELEASE:
     case TWR_MODULE_ENCODER_EVENT_ERROR:
     default:
-        return;
+        break;
     }
 }
 
@@ -255,6 +259,7 @@ static void display_update(void *param)
             break;
         case NUM_PAGES:
         default:
+            application_error(TWR_ERROR_INVALID_PARAMETER);
             break;
         }
 
